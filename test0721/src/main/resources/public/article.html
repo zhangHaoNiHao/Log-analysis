@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:display="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>数据报表</title>
+    <script src="jquery-3.2.1.min.js"></script>
+    <script src="echarts.min.js"></script>
+    <link href="/style.css" type='text/css' rel="stylesheet"/>
+</head>
+<body>
+<div class='header'>
+    <p>日志分析报表</p>
+</div>
+<div>
+    <div class="nav">
+        <ul>
+            <li class="current"><a href="#">总览</a></li>
+            <li class="current"><a href="/upload.html">上传文件</a></li>
+            <li class="current"><a href="/clean.html">清洗数据</a></li>
+            <li class="current"><a href="/article.html">数据报表</a></li>
+            <!--
+            <li class="current"><a href="/video.html">访问量最多的Top10视频</a></li>
+            <li class="current"><a href="/trafficvideo.html">流量最多的Top10视频课程</a></li>
+            <li class="current"><a href="/trafficarticle.html">流量最多的Top10文章课程</a></li>
+            <li class="current"><a href="/city.html">城市Top5视频课程</a></li>
+            <li class="current"><a href="/city_article.html">城市Top5文章课程</a></li>
+            -->
+        </ul>
+    </div>
+    <div class="container">
+        <div class="title">总览饼图</div>
+        <div class="show">
+            <h3>将虚拟机中hive的服务打开 命令hive --service hiveserver2 </h3><br><br>
+            请选择文件：作为查询的表名
+            <input type="file" name="path" id="path"><br>
+            <button type="button" onclick="choosefile()">查询</button>
+            <div></div>
+            <div id="main" style="width: 420px;height:280px;display:inline-block"></div>
+            <div id="main3" style="width: 420px;height:280px;display:inline-block"></div>
+            <div></div>
+            <div id="main1" style="width: 420px;height:280px;display:inline-block"></div>
+            <div id="main2" style="width: 420px;height:280px;display:inline-block"></div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function choosefile() {
+
+        //1.受欢迎的文章
+        var arr;
+        var nums = [];
+        var values = [];
+        var path = document.getElementById("path").value;
+        alert(path);
+        $.ajax({
+            "url": "/article",
+            "data": {"path": path},
+            "async": false,
+            "type": "get",
+            "dataType": "json",
+            "success": function (data) {
+                arr = data;
+            }
+        });
+        for (var i = 0; i < arr.length; i++) {
+            nums.push(arr[i].id);
+            values.push(arr[i].sum);
+        }
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '文章受欢迎度分析'
+            },
+            tooltip: {},
+            legend: {
+                data: ['文章受欢迎度分析']
+            },
+            xAxis: {
+                data: nums
+            },
+            yAxis: {},
+            series: [{
+                name: '访问量',
+                type: 'bar',
+                data: values
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+        //前十受欢迎的视频
+        var arr3;
+        var nums3=[];
+        var values3=[]
+        $.ajax({
+            "url":"/video",
+            "data": {"path": path},
+            "async":false,
+            "type":"get",
+            "dataType":"json",
+            "success":function(data){
+                arr3=data;
+            }
+        });
+        for(var i=0;i<arr3.length;i++){
+            nums3.push(arr3[i].id);
+            values3.push(arr3[i].sum);
+        }
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main3'));
+
+        // 指定图表的配置项和数据
+        var option3 = {
+            title: {
+                text: '视频受欢迎度分析'
+            },
+            tooltip: {},
+            legend: {
+                data:['视频受欢迎度分析']
+            },
+            xAxis: {
+                data:nums3
+            },
+            yAxis: {},
+            series: [{
+                name: '访问量',
+                type: 'bar',
+                data: values3
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option3);
+
+
+        //流量前十的文章
+        var arr1;
+        var nums1=[];
+        var values1=[]
+        $.ajax({
+            "url":"/trafficarticle",
+            "data": {"path": path},
+            "async":false,
+            "type":"get",
+            "dataType":"json",
+            "success":function(data){
+                arr1=data;
+            }
+        });
+        for(var i=0;i<arr1.length;i++){
+            nums1.push(arr1[i].id);
+            values1.push(arr1[i].sum);
+        }
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main1'));
+        // 指定图表的配置项和数据
+        var option1 = {
+            title: {
+                text: '根据流量分析文章课程受欢迎度'
+            },
+            tooltip: {},
+            legend: {
+                data:['根据流量分析文章课程受欢迎度']
+            },
+            xAxis: {
+                data:nums1
+            },
+            yAxis: {},
+            series: [{
+                name: '流量',
+                type: 'bar',
+                data: values1
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option1);
+
+        //流量前十的视频
+        var arr2;
+        var nums2=[];
+        var values2=[]
+        $.ajax({
+            "url":"/trafficvideo",
+            "data": {"path": path},
+            "async":false,
+            "type":"get",
+            "dataType":"json",
+            "success":function(data){
+                arr2=data;
+            }
+        });
+        for(var i=0;i<arr2.length;i++){
+            nums2.push(arr2[i].id);
+            values2.push(arr2[i].sum);
+        }
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main2'));
+
+        // 指定图表的配置项和数据
+        var option2 = {
+            title: {
+                text: '根据流量分析视频课程受欢迎度'
+            },
+            tooltip: {},
+            legend: {
+                data:['根据流量分析视频课程受欢迎度']
+            },
+            xAxis: {
+                data:nums2
+            },
+            yAxis: {},
+            series: [{
+                name: '流量',
+                type: 'bar',
+                data: values2
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option2);
+    }
+
+</script>
+</body>
+</html>

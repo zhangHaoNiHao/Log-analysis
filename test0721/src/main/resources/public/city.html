@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-3.2.1.min.js"></script>
+    <script src="echarts.min.js"></script>
+    <link href="/style.css" type='text/css' rel="stylesheet"/>
+</head>
+<body>
+<div class='header'>
+    <p>企业异常预测</p>
+</div>
+<div>
+    <div class="nav">
+        <ul>
+            <li class="current"><a href="#">总览</a></li>
+            <li class="current"><a href="/article.html">访问量最多的Top10文章</a></li>
+            <li class="current"><a href="/video.html">访问量最多的Top10视频</a></li>
+            <li class="current"><a href="/trafficvideo.html">流量最多的Top10视频课程</a></li>
+            <li class="current"><a href="/trafficarticle.html">流量最多的Top10文章课程</a></li>
+
+            <li class="current"><a href="/city.html">城市Top5视频课程</a></li>
+            <li class="current"><a href="/city_article.html">城市Top5文章课程</a></li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="title">总览饼图</div>
+        <div class="show">
+            <select  style="width:50%;height:30px" class="form-control" onchange="citychange(this)" id="city">
+
+            </select>
+            <div id="main" style="width: 600px;height:400px;"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function citychange(){
+        var arr;
+        var nums=[];
+        var values=[];
+
+        var cityname = $("#city").find("option:selected").text();
+        alert(cityname)
+
+        $.ajax({
+            "url":"http://localhost:8080/city_video",
+            "data":{"city":cityname },
+            "async":false,
+            "type":"get",
+            "dataType":"json",
+            "success":function(data){
+                arr=data;
+                alert(data);
+            }
+        });
+        for(var i=0;i<arr.length;i++){
+            nums.push(arr[i].id);
+            values.push(arr[i].sum);
+            //alert(arr[i].id+" "+arr[i].sum)
+        }
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '文章受欢迎度分析'
+            },
+            tooltip: {},
+            legend: {
+                data:['文章受欢迎度分析']
+            },
+            xAxis: {
+                data:nums
+            },
+            yAxis: {},
+            series: [{
+                name: '访问量',
+                type: 'bar',
+                data: values
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+    $.get(
+        '/city',
+        function(data) {
+        if(data != null){
+            var content = '<option value="0">请选择城市</option>';
+            $.each(data, function(index, item) {
+                content += '<option value="' + item + '">' + item + '</option>'
+            });
+            $("#city").html(content);
+        }
+    });
+
+
+
+
+
+
+</script>
+</body>
+</html>

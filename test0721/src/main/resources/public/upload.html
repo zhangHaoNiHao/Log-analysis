@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>上传数据</title>
+    <script src="jquery-3.2.1.min.js"></script>
+    <script src="echarts.min.js"></script>
+    <link href="/style.css" type='text/css' rel="stylesheet"/>
+</head>
+<body>
+<div class='header'>
+    <p>日志分析报表</p>
+</div>
+<div>
+    <div class="nav">
+        <ul>
+            <li class="current"><a href="#">总览</a></li>
+            <li class="current"><a href="/upload.html">上传文件</a></li>
+            <li class="current"><a href="/clean.html">清洗数据</a></li>
+            <li class="current"><a href="/article.html">数据报表</a></li>
+            <!--
+            <li class="current"><a href="/video.html">访问量最多的Top10视频</a></li>
+            <li class="current"><a href="/trafficvideo.html">流量最多的Top10视频课程</a></li>
+            <li class="current"><a href="/trafficarticle.html">流量最多的Top10文章课程</a></li>
+            <li class="current"><a href="/city.html">城市Top5视频课程</a></li>
+            <li class="current"><a href="/city_article.html">城市Top5文章课程</a></li>
+            -->
+        </ul>
+    </div>
+    <div class="container">
+        <div class="title">总览饼图</div>
+        <div class="show">
+            <h3>将虚拟机中hive的服务打开 命令hive --service hiveserver2 </h3>
+            <form action="/upload" method="post">
+                上传文件：<input type="file" name="path">
+                <br>
+                <button type="submit">上传</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
