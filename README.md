@@ -28,5 +28,10 @@ Hadoop 工具：mysql、sqoop 、hive
        可视化展示：利用Javaweb，将mysql数据库中的数据利用echars进行报表展示。
         注：Javaweb的界面风格套用http://dblab.xmu.edu.cn/blog/1369-2/ 中的页面
  
+ 运行截图：
+ ![](images/2.jpg)
+ ![](images/3.jpg)
+ ![](images/1.jpg)
+ 
 本程序是利用idea Intellij开发工具中的Springboot框架，由于第一次使用还不太熟悉，文件上传成功/失败，数据清洗成功/失败等对应的消息提示还没有完成。
 虚拟机的配置会在接下来的博客中一一说明。
